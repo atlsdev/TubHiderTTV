@@ -6,16 +6,18 @@ window.onhashchange = load();
 const log = (...msg) => console.log("[THOT HIDER]",...msg);
 
 var blacklist;
-var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        blacklist = JSON.parse(this.responseText);
-    }
-};
-xhr.open("GET", "https://raw.githubusercontent.com/atlsdev/ThotHiderTTV/master/blacklist.json", true);
-xhr.send();
 
 function load() {
+    if(!blacklist) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                blacklist = JSON.parse(this.responseText);
+            }
+        };
+        xhr.open("GET", "https://raw.githubusercontent.com/atlsdev/ThotHiderTTV/master/blacklist.json", true);
+        xhr.send();
+    }
     waitForSelector("div[data-target=\"directory-container\"]").then(() => {
         const directory = document.querySelector("div[data-target=\"directory-container\"] > .ScTower-sc-1dei8tr-0");
         const observer = new MutationObserver((mutations) => {
