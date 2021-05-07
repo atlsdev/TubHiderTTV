@@ -15,7 +15,7 @@ function load() {
                 blacklist = JSON.parse(this.responseText);
             }
         };
-        xhr.open("GET", "https://raw.githubusercontent.com/atlsdev/ThotHiderTTV/master/blacklist.json", true);
+        xhr.open("GET", "https://cdn.jsdelivr.net/gh/atlsdev/ThotHiderTTV@master/blacklist.json", true);
         xhr.send();
     }
     waitForSelector("div[data-target=\"directory-container\"]").then(() => {
