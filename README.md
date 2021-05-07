@@ -1,5 +1,7 @@
 # ThotHiderTTV
 A Browser extension that hides all the th0ts from Twitch Directory pages.
+## Mistakes?
+If you believe there were any mistakes, such as wrongful blacklist or we missed some thots, please do let us know by [creating an issue](https://github.com/atlsdev/ThotHiderTTV/issues/new/choose).
 ## How to Use
 To use this extension, you have to download the repository. 
 
