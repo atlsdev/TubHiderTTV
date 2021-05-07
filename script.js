@@ -1,78 +1,55 @@
+const USERNAME_SEL = "[data-test-selector=\"ChannelLink\"]";
+// const BL_URL = "https://raw.githubusercontent.com/atlsdev/ThotHiderTTV/master/blacklist.json";
+const BL_URL = "https://cdn.jsdelivr.net/gh/atlsdev/ThotHiderTTV/blacklist.json";
+
 window.onload = load();
-window.onpageshow = load();
-window.onpagehide = load();
-window.onhashchange = load();
 
 const log = (...msg) => console.log("[THOT HIDER]",...msg);
 
-var blacklist;
-
 function load() {
-    if(!blacklist) {
+    if(window.blacklist === undefined || window.blacklist === null) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                blacklist = JSON.parse(this.responseText);
+                window.blacklist = JSON.parse(this.responseText);
+                waitFor(`div[data-target="directory-first-item"]`).then(() => {
+                    var channels = document.querySelectorAll(USERNAME_SEL);
+                    channels.forEach((channel) => hide(channel));
+                    new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if(mutation.addedNodes.length > 0) {
+                                channels = document.querySelectorAll(USERNAME_SEL);
+                                channels.forEach((channel) => hide(channel));
+                            }
+                        });
+                    }).observe(document.querySelector(".hRbnOC"), { childList: true });
+                });
             }
         };
-        xhr.open("GET", "https://cdn.jsdelivr.net/gh/atlsdev/ThotHiderTTV@master/blacklist.json", true);
+        xhr.open("GET", BL_URL, true);
         xhr.send();
     }
-    waitForSelector("div[data-target=\"directory-container\"]").then(() => {
-        const directory = document.querySelector("div[data-target=\"directory-container\"] > .ScTower-sc-1dei8tr-0");
-        const observer = new MutationObserver((mutations) => {
-            hide();
-        });
-
-        observer.observe(directory, {
-            childList: true
-        });
-        hide();
-    });
 };
 
-function hide() {
-    var potentialThots = document.querySelectorAll("a[data-test-selector=\"ChannelLink\"]");
-    for (let i = 0; i < potentialThots.length; i++) {
-        const thot = potentialThots[i];
-        if(blacklist.includes(thot.innerHTML.toLowerCase())) {
-            log("Thot has been found!",thot.innerHTML,"begone!");
-            var el = thot.closest("[data-target]").parentElement;
-            el.parentNode.removeChild(el);
-        }
+function hide(node) {
+    if(window.blacklist.includes(node.innerHTML.toLowerCase())) {
+        log(`Thot Found! Deleted "${node.innerHTML}" from existence.`);
+        node.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(node.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
     }
 };
 
-async function waitForSelector(selector, opts = {}) {
-    return new Promise((resolve, reject) => {
-        const element = document.querySelector(selector);
-        if (element) {
-            resolve(element);
-            return;
-        }
-        const mutObserver = new MutationObserver(mutations => {
-            for (const mutation of mutations) {
-                const nodes = Array.from(mutation.addedNodes);
-                for (const node of nodes) {
-                    if (node.matches && node.matches(selector)) {
-                        mutObserver.disconnect();
-                        resolve(node);
-                        return;
-                    }
-                }
+function waitFor(selector) {
+    return new Promise(function (res, rej) {
+        waitForElementToDisplay(selector, 200);
+        function waitForElementToDisplay(selector, time) {
+            if (document.querySelector(selector) != null) {
+                res(document.querySelector(selector));
             }
-        });
-
-        mutObserver.observe(document.documentElement, { childList: true, subtree: true })
-        if (opts.timeout) {
-            setTimeout(() => {
-                mutObserver.disconnect();
-                if (opts.optional) {
-                    resolve(null);
-                } else {
-                    reject(new Error(`Timeout exceeded while waiting for selector ("${selector}").`));
-                }
-            }, opts.timeout);
+            else {
+                setTimeout(function () {
+                    waitForElementToDisplay(selector, time);
+                }, time);
+            }
         }
     });
 };
