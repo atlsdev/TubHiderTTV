@@ -1,0 +1,15 @@
+{
+	"manifest_version": 3,
+	"name": "ThotHiderTTV",
+	"version": "1.0.0",
+	"description": "Hides all the Just Chatting Thots.",
+	"content_scripts": [
+		{
+			"matches": ["*://*.twitch.tv/*"],
+			"js": [ "script.js" ]
+		}
+	],
+	"host_permissions": [
+		"*://raw.githubusercontent.com/atlsdev/ThotHiderTTV/*/blacklist.json"
+	]
+}
