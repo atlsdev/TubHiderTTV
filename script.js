@@ -29,7 +29,7 @@ function load() {
         xhr.open("GET", BL_URL, true);
         xhr.send();
     }
-    waitFor(`div[data-target="directory-first-item"]`).then(() => {
+    waitFor(`div[data-target="directory-container"] > div > div[data-target]:nth-child(30)`).then(() => {
         var channels = document.querySelectorAll(USERNAME_SEL);
         channels.forEach((channel) => hide(channel));
         new MutationObserver((mutations) => {
