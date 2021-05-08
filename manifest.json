@@ -5,11 +5,8 @@
 	"description": "Hides all the Just Chatting Thots.",
 	"content_scripts": [
 		{
-			"matches": ["*://*.twitch.tv/*"],
+			"matches": ["*://*.twitch.tv/directory/*"],
 			"js": [ "script.js" ]
 		}
-	],
-	"host_permissions": [
-		"*://raw.githubusercontent.com/atlsdev/ThotHiderTTV/*/blacklist.json"
 	]
 }
