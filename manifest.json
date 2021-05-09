@@ -1,12 +1,15 @@
 {
 	"manifest_version": 3,
-	"name": "ThotHiderTTV",
-	"version": "1.0.0",
-	"description": "Hides all the Just Chatting Thots.",
+	"name": "TubHiderTTV",
+	"version": "1.0.1",
+	"description": "Hides all the naughty people from Twitch.",
 	"content_scripts": [
 		{
 			"matches": ["*://*.twitch.tv/directory/*"],
 			"js": [ "script.js" ]
 		}
-	]
+	],
+	"icons": {
+		"128": "assets/logo.png"
+	}
 }

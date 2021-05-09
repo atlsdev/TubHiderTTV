@@ -1,13 +1,13 @@
 const USERNAME_SEL = "[data-test-selector=\"ChannelLink\"]";
-const BL_URL = "https://raw.githubusercontent.com/atlsdev/ThotHiderTTV/master/blacklist.json";
-// const BL_URL = "https://cdn.jsdelivr.net/gh/atlsdev/ThotHiderTTV/blacklist.json";
+const BL_URL = "https://raw.githubusercontent.com/atlsdev/TubHiderTTV/master/blacklist.json";
 
 window.onload = load();
 var curHref = location.href;
 
-const log = (...msg) => console.log("[THOT HIDER]",...msg);
+const log = (...msg) => console.log("[TUB HIDER]",...msg);
 
 function load() {
+    var hasScrolled = false;
     new MutationObserver(mutations => {
         mutations.forEach(() => {
             if(curHref !== location.href) {
@@ -29,7 +29,7 @@ function load() {
         xhr.open("GET", BL_URL, true);
         xhr.send();
     }
-    waitFor(`div[data-target="directory-container"] > div > div[data-target]:nth-child(30)`).then(() => {
+    waitFor(`.online-friends`).then(() => {
         var channels = document.querySelectorAll(USERNAME_SEL);
         channels.forEach((channel) => hide(channel));
         new MutationObserver((mutations) => {
@@ -45,7 +45,7 @@ function load() {
 
 function hide(node) {
     if(window.blacklist.includes(node.innerHTML.toLowerCase())) {
-        log(`Thot Found! Deleted "${node.innerHTML}" from existence.`);
+        log(`Tubber Found! Deleted "${node.innerHTML}" from existence.`);
         node.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(node.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
     }
 };
